@@ -1,0 +1,20 @@
+{
+  "attributes": {
+    "product_id": {
+      "type": "foreignId"
+    },
+    "itemable": {
+      "type": "morphs"
+    },
+    "price": {
+      "type": "float"
+    },
+    "quantity": {
+      "type": "integer",
+      "definition": "default:1"
+    }
+  },
+  "relations": {
+
+  }
+}
