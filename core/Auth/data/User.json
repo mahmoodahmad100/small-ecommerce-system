@@ -1,0 +1,25 @@
+{
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "definition": "unique"
+    },
+    "email_verified_at": {
+      "type": "timestamp",
+      "definition": "nullable"
+    },
+    "password": {
+      "type": "string"
+    },
+    "remember_token": {
+      "type": "string",
+      "definition": "nullable"
+    }
+  },
+  "relations": {
+
+  }
+}
