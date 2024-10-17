@@ -4,6 +4,7 @@ namespace Core\Auth;
 
 use Illuminate\Support\ServiceProvider;
 use Core\Base\Traits\ServiceProvider\File;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,8 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Relation::enforceMorphMap([
+            'users' => 'Core\Auth\Models\User',
+        ]);
     }
 }
