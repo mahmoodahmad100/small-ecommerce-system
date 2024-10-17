@@ -5,6 +5,8 @@ namespace Core\Sale;
 use Illuminate\Support\ServiceProvider;
 use Core\Base\Traits\ServiceProvider\File;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Core\Sale\Models\Order;
+use Core\Sale\Observers\OrderObserver;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,8 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Order::observe(OrderObserver::class);
+
         Relation::enforceMorphMap([
             'orders' => 'Core\Sale\Models\Order',
             'Item'   => 'Core\Sale\Models\Item',

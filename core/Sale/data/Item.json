@@ -1,7 +1,8 @@
 {
   "attributes": {
     "product_id": {
-      "type": "foreignId"
+      "type": "foreignId",
+      "definition": "nullable"
     },
     "itemable": {
       "type": "morphs"

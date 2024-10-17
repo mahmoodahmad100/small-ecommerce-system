@@ -15,7 +15,7 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('product_id');
+            $table->foreignId('product_id')->nullable();
             $table->morphs('itemable');
             $table->float('price');
             $table->integer('quantity')->default(1);
