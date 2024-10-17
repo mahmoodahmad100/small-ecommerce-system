@@ -3,6 +3,7 @@
 namespace Core\Inventory\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource as Resource;
+use Core\Sale\Resources\ItemResource;
 
 class ProductResource extends Resource
 {
@@ -21,7 +22,7 @@ class ProductResource extends Resource
             'price'       => $this->price,
             'quantity'    => $this->quantity,
             $this->mergeWhen($request->route()->getName() == 'api.v1.products.show', [
-
+                'items' => ItemResource::collection($this->items)
             ])
         ];
     }

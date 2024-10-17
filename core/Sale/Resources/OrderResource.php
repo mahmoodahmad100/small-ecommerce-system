@@ -20,7 +20,7 @@ class OrderResource extends Resource
             'subtotal' => $this->subtotal,
             'total'    => $this->total,
             $this->mergeWhen($request->route()->getName() == 'api.v1.orders.show', [
-
+                'items' => ItemResource::collection($this->items)
             ])
         ];
     }
