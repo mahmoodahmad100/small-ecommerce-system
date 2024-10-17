@@ -20,7 +20,7 @@ class ItemResource extends Resource
             'price' => $this->price,
             $this->mergeWhen($request->route()->getName() == 'api.v1.items.show', [
                 'product' => new ProductResource($this->product),
-                'orders'  => $this->when($this->itemable_type == 'orders', new OrderResource($this->itemable)),
+                'order'   => $this->when($this->itemable_type == 'orders', new OrderResource($this->itemable)),
             ])
         ];
     }
