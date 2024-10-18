@@ -54,7 +54,14 @@ class Controller extends \App\Http\Controllers\Controller
      */
     public function index()
     {
-        return $this->sendResponse($this->resource::collection($this->model->all()));
+        $perPage = 30;
+
+        if ($this->request->per_page && $this->request->per_page < $perPage) {
+            $perPage = $this->request->per_page;
+        }
+
+        return $this->sendResponse($this->resource::collection($this->model->paginate($perPage))
+                    ->response()->getData(true));
     }
 
     /**
