@@ -1,5 +1,9 @@
 {
   "attributes": {
+    "category_id": {
+      "type": "foreignId",
+      "definition": "nullable"
+    },
     "name": {
       "type": "string"
     },

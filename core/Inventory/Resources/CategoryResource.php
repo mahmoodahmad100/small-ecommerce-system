@@ -3,9 +3,8 @@
 namespace Core\Inventory\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource as Resource;
-use Core\Sale\Resources\ItemResource;
 
-class ProductResource extends Resource
+class CategoryResource extends Resource
 {
     /**
      * Transform the resource into an array.
@@ -19,11 +18,8 @@ class ProductResource extends Resource
             'id'          => $this->id,
             'name'        => $this->name,
             'description' => $this->description,
-            'price'       => $this->price,
-            'quantity'    => $this->quantity,
-            $this->mergeWhen($request->route()->getName() == 'api.v1.products.show', [
-                'category' => new CategoryResource($this->whenLoaded('category')),
-                'items'    => ItemResource::collection($this->items)
+            $this->mergeWhen($request->route()->getName() == 'api.v1.categories.show', [
+                'products' => ProductResource::collection($this->whenLoaded('products'))
             ])
         ];
     }

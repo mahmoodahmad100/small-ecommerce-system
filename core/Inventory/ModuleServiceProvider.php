@@ -5,6 +5,8 @@ namespace Core\Inventory;
 use Illuminate\Support\ServiceProvider;
 use Core\Base\Traits\ServiceProvider\File;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Core\Inventory\Models\Category;
+use Core\Inventory\Observers\CategoryObserver;
 use Core\Inventory\Models\Product;
 use Core\Inventory\Observers\ProductObserver;
 
@@ -29,10 +31,12 @@ class ModuleServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Category::observe(CategoryObserver::class);
         Product::observe(ProductObserver::class);
 
         Relation::enforceMorphMap([
-            'products' => 'Core\Inventory\Models\Product',
+            'categories' => 'Core\Inventory\Models\Category',
+            'products'   => 'Core\Inventory\Models\Product',
         ]);
     }
 }

@@ -1,0 +1,14 @@
+{
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text",
+      "definition": "nullable"
+    }
+  },
+  "relations": {
+
+  }
+}

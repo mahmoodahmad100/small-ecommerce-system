@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $this->call(\Core\Inventory\Database\Seeds\CategorySeeder::class);
         $this->call(\Core\Inventory\Database\Seeds\ProductSeeder::class);
     }
 }

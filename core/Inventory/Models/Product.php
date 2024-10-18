@@ -11,8 +11,19 @@ class Product extends Base
      */
     protected static function booted(): void
     {
+        static::addGlobalScope(new Scopes\CategoriesScope);
         static::addGlobalScope(new Scopes\ContentScope);
         static::addGlobalScope(new Scopes\RangeScope);
+    }
+
+    /**
+     * Get the category
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
     /**

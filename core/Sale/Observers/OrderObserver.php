@@ -22,8 +22,12 @@ class OrderObserver
                 $product = Product::find($item['product_id']);
 
                 /**
-                 * No need for middleware to check if the quantity is available.
+                 * No need for middleware to check if the product exists and quantity is available.
                  */
+                if (!$product) {
+                    abort(400, 'The product does not exist.');
+                }
+                
                 if ($item['quantity'] > $product->quantity) {
                     abort(400, 'The quantity is not available.');
                 }
