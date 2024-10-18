@@ -46,7 +46,7 @@ class ProductRequest extends FormRequest
                     'category_id' => 'integer|required',
                     'name'        => 'string|required',
                     'description' => 'string|nullable',
-                    'price'       => 'decimal:2,4|required',
+                    'price'       => 'decimal:1,2|required',
                     'quantity'    => 'integer|required'
                 ];
             }
@@ -55,7 +55,7 @@ class ProductRequest extends FormRequest
                     'category_id' => 'integer|nullable',
                     'name'        => 'string|nullable',
                     'description' => 'string|nullable',
-                    'price'       => 'decimal:2,4|nullable',
+                    'price'       => 'decimal:1,2|nullable',
                     'quantity'    => 'integer|nullable'
                 ];
             }

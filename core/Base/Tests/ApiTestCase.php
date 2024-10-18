@@ -4,8 +4,8 @@ namespace Core\Base\Tests;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\User;
-// use Tymon\JWTAuth\Facades\JWTAuth;
+use Core\Auth\Models\User;
+use Laravel\Sanctum\Sanctum;
 
 class ApiTestCase extends TestCase
 {
@@ -65,19 +65,6 @@ class ApiTestCase extends TestCase
     }
 
     /**
-     * get the token (to be used in the API Requests)
-     *
-     * @codeCoverageIgnore
-     * @return string
-     */
-    protected function getToken()
-    {
-        $data = $this->getUserCredentials();
-        // return JWTAuth::fromUser($this->createUser());
-        return 'dummy-token';
-    }
-
-    /**
      * get the base url for API
      *
      * @codeCoverageIgnore
@@ -104,7 +91,10 @@ class ApiTestCase extends TestCase
         ];
 
         if ($is_auth) {
-            $headers['Authorization'] = 'Bearer ' . $this->getToken();
+            Sanctum::actingAs(
+                User::factory()->create(),
+                ['*']
+            );
         }
 
         return $headers;

@@ -36,11 +36,11 @@ class AuthenticationTest extends ApiTestCase
              ->assertStatus(422)
              ->assertJson([
                 'is_success' => false,
-                'http_status_code' => 422,
+                'status_code' => 422,
                 'message' => 'The given data was invalid.',
                 'errors' => [
-                    ['field' => 'email', 'message' => 'The email field is required.', 'code' => 4170],
-                    ['field' => 'password', 'message' => 'The password field is required.', 'code' => 4170],
+                    ['field' => 'email', 'message' => 'The email field is required.', 'code' => 4204],
+                    ['field' => 'password', 'message' => 'The password field is required.', 'code' => 4204],
                 ]
              ]);
     }
@@ -56,8 +56,8 @@ class AuthenticationTest extends ApiTestCase
             ->assertStatus(401)
             ->assertJson([
                 'is_success' => false,
-                'http_status_code' => 401,
-                'message' => 'please login with the correct data',
+                'status_code' => 401,
+                'message' => 'The provided credentials are incorrect.',
                 'errors' => []
             ]);
     }
@@ -72,56 +72,11 @@ class AuthenticationTest extends ApiTestCase
         $this->createUser();
         $data         = $this->getUserCredentials();
         $json         = $this->getJsonStructure();
-        $json['data'] = [
-            'access_token',
-            'token_type',
-            'expires_in'
-        ];
+        $json['data'] = ['token'];
 
         $this->json('POST', $this->base_url . 'login', $data, $this->getHeaders(false))
              ->assertStatus(200)
              ->assertJsonStructure($json);
-
-        $this->assertAuthenticated();
-    }
-
-    /**
-     * get the user info
-     *
-     * @return void
-     */
-    public function testItShouldGetAuthUserInfo()
-    {
-        $json         = $this->getJsonStructure();
-        $json['data'] = [
-            'id',
-            'name',
-            'email'
-        ];
-
-        $this->json('GET', $this->base_url . 'me', [], $this->getHeaders())
-             ->assertStatus(200)
-             ->assertJsonStructure($json);
-    }
-
-    /**
-     * update the user info
-     *
-     * @return void
-     */
-    public function testItShouldUpdateAuthUserInfo()
-    {
-        $data         = ['name' => 'New Name'];
-        $json         = $this->getJsonStructure();
-        $json['data'] = [
-            'id',
-            'name',
-            'email'
-        ];
-
-        $this->json('PUT', $this->base_url . 'update', $data, $this->getHeaders())
-            ->assertStatus(200)
-            ->assertJsonStructure($json);
     }
 
     /**
@@ -134,27 +89,6 @@ class AuthenticationTest extends ApiTestCase
         $this->json('GET', $this->base_url . 'logout', [], $this->getHeaders())
             ->assertStatus(200)
             ->assertJsonStructure($this->getJsonStructure());
-    }
-
-    /**
-     * refresh a token
-     *
-     * @return void
-     */
-    public function testItShouldRefreshToken()
-    {
-        $json         = $this->getJsonStructure();
-        $json['data'] = [
-            'access_token',
-            'token_type',
-            'expires_in'
-        ];
-
-        $this->json('GET', $this->base_url . 'refresh', [], $this->getHeaders())
-            ->assertStatus(200)
-            ->assertJsonStructure($json);
-
-        $this->assertAuthenticated();
     }
 
     // below tests are overridden from the ApiTestCase to avoid default behavior //

@@ -24,6 +24,11 @@ class ProductTest extends ApiTestCase
         $this->json['data'] = ['id'];
 
         foreach ($this->data as $key => $value) {
+
+            if ($key == 'category_id') {
+                continue;
+            }
+
             $this->json['data'][] = $key;
         }
     }

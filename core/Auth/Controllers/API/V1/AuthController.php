@@ -5,7 +5,6 @@ namespace Core\Auth\Controllers\API\V1;
 use Core\Auth\Models\User;
 use Core\Auth\Requests\UserRequest as CustomRequest;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AuthController extends \Core\Base\Controllers\API\Controller
 {
@@ -31,7 +30,7 @@ class AuthController extends \Core\Base\Controllers\API\Controller
         $user = User::where('email', $request->email)->first();
  
         if (! $user || ! Hash::check($request->password, $user->password)) {
-            return $this->sendResponse([], 'The provided credentials are incorrect.', 401);
+            return $this->sendResponse([], 'The provided credentials are incorrect.', false, 401);
         }
      
         return $this->sendResponse(['token' => $user->createToken('api-token', [
