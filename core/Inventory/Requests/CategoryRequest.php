@@ -7,6 +7,19 @@ use Illuminate\Foundation\Http\FormRequest;
 class CategoryRequest extends FormRequest
 {
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'name'        => strip_tags($this->name),
+            'description' => strip_tags($this->description),
+        ]);
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool

@@ -38,9 +38,11 @@ class OrderObserver
                 ]);
             }
             
-            $order->tax   = ($order->subtotal * config('core_sale.tax')) / 100;
-            $order->total = $order->subtotal + $order->tax;
-            cache()->put('current-order-items', $newItems, now()->addMinutes(10));
+            $order->tax     = ($order->subtotal * config('core_sale.tax')) / 100;
+            $order->total   = $order->subtotal + $order->tax;
+            $user           = request()->user();
+            $order->user_id = $user->id;
+            cache()->put("current-order-items-user-$user", $newItems, now()->addMinutes(10));
         }
     }
 
@@ -49,10 +51,11 @@ class OrderObserver
      */
     public function saved(Order $order): void
     {
-        if (cache()->has('current-order-items')) {
+        $user = request()->user();
+        if (cache()->has("current-order-items-user-$user")) {
             $order->items()->delete();
-            $order->items()->createMany(cache()->get('current-order-items'));
-            cache()->forget('current-order-items');
+            $order->items()->createMany(cache()->get("current-order-items-user-$user"));
+            cache()->forget("current-order-items-user-$user");
         }
     }
 

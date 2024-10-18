@@ -3,6 +3,7 @@
 namespace Core\Auth\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource as Resource;
+use Core\Sale\Resources\OrderResource;
 
 class UserResource extends Resource
 {
@@ -19,7 +20,7 @@ class UserResource extends Resource
             'name'  => $this->name,
             'email' => $this->email,
             $this->mergeWhen($request->route()->getName() == 'api.v1.users.show', [
-
+                'orders' => OrderResource::collection($this->orders)
             ])
         ];
     }

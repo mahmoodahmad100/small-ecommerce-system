@@ -1,5 +1,8 @@
 {
   "attributes": {
+    "user_id": {
+      "type": "foreignId"
+    },
     "tax": {
       "type": "float"
     },

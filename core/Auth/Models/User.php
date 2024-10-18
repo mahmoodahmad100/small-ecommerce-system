@@ -3,13 +3,12 @@
 namespace Core\Auth\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -45,22 +44,26 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
+     * Create a new factory instance for the model.
      *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function getJWTIdentifier()
+    protected static function newFactory()
     {
-        return $this->getKey();
-    }
+        $namespace        = explode('\\', static::class);
+        $module_namespace = "{$namespace[0]}\\{$namespace[1]}";
+        $factory          = "{$module_namespace}\\Database\\Factories\\{$namespace[sizeof($namespace) - 1]}Factory";
 
+        return $factory::new();
+    }
+    
     /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
+     * Get the orders.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getJWTCustomClaims()
+    public function orders()
     {
-        return [];
+        return $this->hasMany(\Core\Sale\Models\Order::class);
     }
 }

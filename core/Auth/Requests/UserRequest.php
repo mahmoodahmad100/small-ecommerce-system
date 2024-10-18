@@ -7,6 +7,19 @@ use Illuminate\Foundation\Http\FormRequest;
 class UserRequest extends FormRequest
 {
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'email'    => strip_tags($this->email),
+            'password' => strip_tags($this->password),
+        ]);
+    }
+
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -23,6 +36,14 @@ class UserRequest extends FormRequest
      */
     public function rules()
     { 
+
+        if (request()->route()->getName() == 'api.v1.auth.login') {
+            return [
+                'email'    => 'required|email',
+                'password' => 'required|string'
+            ];
+        }
+
         switch ($this->method()) {
             case 'GET':
             case 'DELETE': {
