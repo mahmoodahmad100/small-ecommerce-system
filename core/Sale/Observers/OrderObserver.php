@@ -13,7 +13,7 @@ class OrderObserver
     public function saving(Order $order): void
     {
         if (request()->items) {
-            $newItems = [];
+            $newItems        = [];
             $order->subtotal = 0;
             $order->tax      = 0;
             $order->total    = 0;
@@ -33,11 +33,22 @@ class OrderObserver
                     'price' => $product->price,
                 ]);
             }
-
-            $order->items()->delete();
-            $order->items()->createMany($newItems);
+            
             $order->tax   = ($order->subtotal * config('core_sale.tax')) / 100;
             $order->total = $order->subtotal + $order->tax;
+            cache()->put('current-order-items', $newItems, now()->addMinutes(10));
+        }
+    }
+
+    /**
+     * Handle the Order "saved" event.
+     */
+    public function saved(Order $order): void
+    {
+        if (cache()->has('current-order-items')) {
+            $order->items()->delete();
+            $order->items()->createMany(cache()->get('current-order-items'));
+            cache()->forget('current-order-items');
         }
     }
 
