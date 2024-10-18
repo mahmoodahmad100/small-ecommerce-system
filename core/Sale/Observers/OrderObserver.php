@@ -14,19 +14,27 @@ class OrderObserver
     {
         if (request()->items) {
             $newItems = [];
-            $order->items()->delete();
             $order->subtotal = 0;
             $order->tax      = 0;
             $order->total    = 0;
 
             foreach (request()->items as $item) {
-                $product          = Product::find($item['product_id']);
+                $product = Product::find($item['product_id']);
+
+                /**
+                 * No need for middleware to check if the quantity is available.
+                 */
+                if ($item['quantity'] > $product->quantity) {
+                    abort(400, 'The quantity is not available.');
+                }
+
                 $order->subtotal += $product->price * $item['quantity'];
                 $newItems[] = array_merge($item, [
                     'price' => $product->price,
                 ]);
             }
 
+            $order->items()->delete();
             $order->items()->createMany($newItems);
             $order->tax   = ($order->subtotal * config('core_sale.tax')) / 100;
             $order->total = $order->subtotal + $order->tax;
