@@ -19,4 +19,16 @@ class ProductController extends \Core\Base\Controllers\API\Controller
     {
         parent::__construct($request, $model, $resource);
     }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function index()
+    {
+        return cache()->remember("{$this->request->getRequestUri()}", now()->addMinutes(5), function () {
+            return parent::index();
+        });
+    }
 }
